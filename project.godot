@@ -1,0 +1,57 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="MiniSurvivor"
+run/main_scene="res://scenes/main/main.tscn"
+config/features=PackedStringArray("4.6", "Mobile")
+config/icon="res://icon.svg"
+
+[autoload]
+
+Events="*res://autoloads/events.gd"
+GameManager="*res://autoloads/game_manager.gd"
+
+[display]
+
+window/size/viewport_width=1080
+window/size/viewport_height=1920
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/handheld/orientation=1
+
+[input]
+
+touch_drag={
+"deadzone": 0.2,
+"events": []
+}
+
+[layer_names]
+
+2d_physics/layer_1="Player"
+2d_physics/layer_2="PlayerProjectile"
+2d_physics/layer_3="Enemy"
+2d_physics/layer_4="EnemyProjectile"
+2d_physics/layer_5="Pickup"
+2d_physics/layer_6="GrazeZone"
+2d_physics/layer_7="Wall"
+2d_physics/layer_8="EnemyHurtbox"
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
+[rendering]
+
+rendering_device/driver.windows="d3d12"
+renderer/rendering_method="mobile"
+environment/defaults/default_clear_color=Color(0.04, 0.04, 0.1, 1)
