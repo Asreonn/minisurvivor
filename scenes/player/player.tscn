@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://player001"]
+
+[ext_resource type="Script" path="res://scenes/player/player.gd" id="1_player"]
+[ext_resource type="Script" path="res://scenes/player/player_visual.gd" id="2_visual"]
+[ext_resource type="Script" path="res://scenes/player/graze_zone.gd" id="3_graze"]
+[ext_resource type="Script" path="res://scenes/player/pickup_zone.gd" id="4_pickup"]
+[ext_resource type="Script" path="res://scenes/fx/overcharge_aura.gd" id="5_overcharge"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
+radius = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_graze"]
+radius = 48.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pickup"]
+radius = 64.0
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 1
+collision_mask = 68
+script = ExtResource("1_player")
+
+[node name="BodyCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_body")
+
+[node name="PlayerVisual" type="Node2D" parent="."]
+script = ExtResource("2_visual")
+
+[node name="OverchargeAura" type="Node2D" parent="."]
+script = ExtResource("5_overcharge")
+
+[node name="GrazeZone" type="Area2D" parent="."]
+script = ExtResource("3_graze")
+
+[node name="GrazeShape" type="CollisionShape2D" parent="GrazeZone"]
+shape = SubResource("CircleShape2D_graze")
+
+[node name="PickupZone" type="Area2D" parent="."]
+script = ExtResource("4_pickup")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupZone"]
+shape = SubResource("CircleShape2D_pickup")
