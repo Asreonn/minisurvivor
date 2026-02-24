@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://lvlup001"]
+
+[ext_resource type="Script" path="res://scenes/ui/level_up_menu.gd" id="1_menu"]
+[ext_resource type="Script" path="res://scenes/ui/level_up_menu_draw.gd" id="2_draw"]
+
+[node name="LevelUpMenu" type="CanvasLayer"]
+layer = 20
+process_mode = 3
+script = ExtResource("1_menu")
+
+[node name="DrawNode" type="Node2D" parent="."]
+script = ExtResource("2_draw")
