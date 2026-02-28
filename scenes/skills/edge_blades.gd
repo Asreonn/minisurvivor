@@ -5,7 +5,6 @@ var damage := 15.0
 var blade_speed := 300.0
 var blade_size := 12.0
 var blades: Array[Dictionary] = []
-const ARENA_HALF := 1000.0
 
 
 func _ready() -> void:
@@ -24,8 +23,18 @@ func _on_upgrade() -> void:
 		5: blade_count = 5; damage = 45.0; blade_speed = 420.0
 
 
+func _get_camera_rect() -> Rect2:
+	var camera: Camera2D = get_tree().current_scene.get_node_or_null("Camera2D")
+	if not camera:
+		return Rect2(-540, -960, 1080, 1920)
+	var vp_size: Vector2 = get_tree().root.get_visible_rect().size / camera.zoom
+	var cam_pos: Vector2 = camera.global_position
+	return Rect2(cam_pos - vp_size / 2.0, vp_size)
+
+
 func activate() -> void:
-	# Spawn blades at random arena edges
+	var cam_rect: Rect2 = _get_camera_rect()
+
 	for i in blade_count:
 		var edge := randi() % 4
 		var pos: Vector2 = Vector2.ZERO
@@ -33,16 +42,16 @@ func activate() -> void:
 
 		match edge:
 			0:  # top
-				pos = Vector2(randf_range(-ARENA_HALF, ARENA_HALF), -ARENA_HALF + 20)
+				pos = Vector2(randf_range(cam_rect.position.x, cam_rect.end.x), cam_rect.position.y)
 				dir = Vector2(randf_range(-0.3, 0.3), 1).normalized()
 			1:  # bottom
-				pos = Vector2(randf_range(-ARENA_HALF, ARENA_HALF), ARENA_HALF - 20)
+				pos = Vector2(randf_range(cam_rect.position.x, cam_rect.end.x), cam_rect.end.y)
 				dir = Vector2(randf_range(-0.3, 0.3), -1).normalized()
 			2:  # left
-				pos = Vector2(-ARENA_HALF + 20, randf_range(-ARENA_HALF, ARENA_HALF))
+				pos = Vector2(cam_rect.position.x, randf_range(cam_rect.position.y, cam_rect.end.y))
 				dir = Vector2(1, randf_range(-0.3, 0.3)).normalized()
 			3:  # right
-				pos = Vector2(ARENA_HALF - 20, randf_range(-ARENA_HALF, ARENA_HALF))
+				pos = Vector2(cam_rect.end.x, randf_range(cam_rect.position.y, cam_rect.end.y))
 				dir = Vector2(-1, randf_range(-0.3, 0.3)).normalized()
 
 		_spawn_blade(pos, dir)
@@ -54,6 +63,7 @@ func _spawn_blade(pos: Vector2, dir: Vector2) -> void:
 	blade.radius = blade_size
 	blade.lifetime = 8.0
 	blade.can_bounce = true
+	blade.screen_bounce = true  # Bounce off camera viewport, not arena
 	blade.pierce_count = 999  # Pierce everything
 
 	if has_modifier("chain"):

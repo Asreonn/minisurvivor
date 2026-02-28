@@ -8,7 +8,8 @@ var lifetime := 3.0
 var timer := 0.0
 var pierce_count := 0  # 0 = no pierce, >0 = pass through N enemies
 var can_bounce := false
-var bounced := false
+var bounce_count := 0  # how many bounces remaining (0 = unlimited when can_bounce)
+var screen_bounce := false  # bounce off screen edges instead of arena
 var hit_enemies: Array[Node] = []
 var color := Color.WHITE
 var radius := 4.0
@@ -56,18 +57,15 @@ func _process(delta: float) -> void:
 	if trail_positions.size() > MAX_TRAIL:
 		trail_positions.pop_back()
 
-	# Arena bounds bounce
-	if can_bounce and not bounced:
-		var arena_half := Vector2(1000, 1000)
-		if abs(global_position.x) > arena_half.x:
-			direction.x *= -1
-			bounced = true
-		if abs(global_position.y) > arena_half.y:
-			direction.y *= -1
-			bounced = true
+	# Bounce logic
+	if can_bounce:
+		if screen_bounce:
+			_bounce_off_screen()
+		else:
+			_bounce_off_arena()
 
-	# Out of bounds removal (with margin)
-	if abs(global_position.x) > 1200 or abs(global_position.y) > 1200:
+	# Out of bounds removal (with margin beyond arena)
+	if not screen_bounce and (abs(global_position.x) > 1200 or abs(global_position.y) > 1200):
 		queue_free()
 
 	queue_redraw()
@@ -113,6 +111,42 @@ func _on_body_entered(body: Node2D) -> void:
 			pierce_count -= 1
 		else:
 			queue_free()
+
+
+func _bounce_off_arena() -> void:
+	var arena_half := 1000.0
+	if abs(global_position.x) > arena_half:
+		direction.x *= -1
+		global_position.x = signf(global_position.x) * arena_half
+	if abs(global_position.y) > arena_half:
+		direction.y *= -1
+		global_position.y = signf(global_position.y) * arena_half
+
+
+func _bounce_off_screen() -> void:
+	var camera: Camera2D = get_tree().current_scene.get_node_or_null("Camera2D")
+	if not camera:
+		return
+	var vp_size: Vector2 = get_tree().root.get_visible_rect().size / camera.zoom
+	var cam_pos: Vector2 = camera.global_position
+	var left: float = cam_pos.x - vp_size.x / 2.0
+	var right: float = cam_pos.x + vp_size.x / 2.0
+	var top: float = cam_pos.y - vp_size.y / 2.0
+	var bottom: float = cam_pos.y + vp_size.y / 2.0
+
+	if global_position.x < left:
+		direction.x = absf(direction.x)
+		global_position.x = left
+	elif global_position.x > right:
+		direction.x = -absf(direction.x)
+		global_position.x = right
+
+	if global_position.y < top:
+		direction.y = absf(direction.y)
+		global_position.y = top
+	elif global_position.y > bottom:
+		direction.y = -absf(direction.y)
+		global_position.y = bottom
 
 
 func _find_nearest_enemy(exclude: Node2D) -> BaseEnemy:
