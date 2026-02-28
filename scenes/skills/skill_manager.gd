@@ -20,6 +20,11 @@ const SKILL_SCENES := {
 }
 
 
+func _ready() -> void:
+	# Give the player a starting skill so they can fight immediately
+	call_deferred("add_skill", "aura_ring")
+
+
 func add_skill(skill_id: String) -> void:
 	if skill_id in skills:
 		# Upgrade existing
@@ -31,8 +36,8 @@ func add_skill(skill_id: String) -> void:
 	if skill_id not in SKILL_SCENES:
 		return
 
-	var script := load(SKILL_SCENES[skill_id])
-	var skill_node: BaseSkill = Node.new()
+	var script: GDScript = load(SKILL_SCENES[skill_id])
+	var skill_node := Node.new()
 	skill_node.set_script(script)
 	skill_node.skill_id = skill_id
 	skill_node.name = skill_id

@@ -43,7 +43,7 @@ func activate() -> void:
 		if enemy is BaseEnemy and not enemy.is_dead:
 			var dist := player_pos.distance_to(enemy.global_position)
 			if dist <= radius:
-				var dir := (enemy.global_position - player_pos).normalized()
+				var dir: Vector2 = (enemy.global_position - player_pos).normalized()
 				enemy.take_damage(damage, dir)
 
 				# Electric modifier: chain to nearby
