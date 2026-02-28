@@ -48,9 +48,9 @@ func _physics_process(delta: float) -> void:
 		knockback_velocity = Vector2.ZERO
 
 	# Chase player
-	var move_vel := Vector2.ZERO
+	var move_vel: Vector2 = Vector2.ZERO
 	if GameManager.player and data:
-		var dir := (GameManager.player.global_position - global_position).normalized()
+		var dir: Vector2 = (GameManager.player.global_position - global_position).normalized()
 		move_vel = dir * data.speed
 
 	velocity = move_vel + knockback_velocity
@@ -58,7 +58,7 @@ func _physics_process(delta: float) -> void:
 
 	# Contact damage
 	if data and data.contact_damage and GameManager.player:
-		var dist := global_position.distance_to(GameManager.player.global_position)
+		var dist: float = global_position.distance_to(GameManager.player.global_position)
 		if dist < data.radius + 14.0:  # 14 = player body radius
 			GameManager.player.take_damage(data.damage)
 

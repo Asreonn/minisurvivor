@@ -35,7 +35,7 @@ func activate() -> void:
 	for i in bullet_count:
 		var t := float(i) / max(bullet_count - 1, 1)
 		var angle := base_angle - half_cone + cone_angle * t
-		var dir := Vector2(cos(angle), sin(angle))
+		var dir: Vector2 = Vector2(cos(angle), sin(angle))
 
 		var bullet := BaseProjectile.new()
 		bullet.setup(player_pos + facing * 20, dir, bullet_speed, damage, COLOR)

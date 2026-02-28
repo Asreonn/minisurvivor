@@ -42,7 +42,7 @@ func _shoot() -> void:
 	if not GameManager.player:
 		return
 
-	var dir := (GameManager.player.global_position - global_position).normalized()
+	var dir: Vector2 = (GameManager.player.global_position - global_position).normalized()
 	var bullet := Area2D.new()
 	bullet.global_position = global_position
 	bullet.collision_layer = 1 << 3  # layer 4 (EnemyProjectile)

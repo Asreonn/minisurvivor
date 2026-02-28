@@ -28,8 +28,8 @@ func activate() -> void:
 	# Spawn blades at random arena edges
 	for i in blade_count:
 		var edge := randi() % 4
-		var pos := Vector2.ZERO
-		var dir := Vector2.ZERO
+		var pos: Vector2 = Vector2.ZERO
+		var dir: Vector2 = Vector2.ZERO
 
 		match edge:
 			0:  # top

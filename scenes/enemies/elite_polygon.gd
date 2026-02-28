@@ -41,14 +41,14 @@ func _shoot_fan() -> void:
 	if not GameManager.player:
 		return
 
-	var base_dir := (GameManager.player.global_position - global_position).normalized()
+	var base_dir: Vector2 = (GameManager.player.global_position - global_position).normalized()
 	var base_angle := base_dir.angle()
 	var spread := PI / 3.0  # 60 degree spread
 
 	for i in FAN_COUNT:
 		var t := float(i) / max(FAN_COUNT - 1, 1)
 		var angle := base_angle - spread / 2.0 + spread * t
-		var dir := Vector2(cos(angle), sin(angle))
+		var dir: Vector2 = Vector2(cos(angle), sin(angle))
 
 		var bullet := Area2D.new()
 		bullet.global_position = global_position

@@ -41,7 +41,7 @@ func activate() -> void:
 
 	for enemy in enemies:
 		if enemy is BaseEnemy and not enemy.is_dead:
-			var dist := player_pos.distance_to(enemy.global_position)
+			var dist: float = player_pos.distance_to(enemy.global_position)
 			if dist <= radius:
 				var dir: Vector2 = (enemy.global_position - player_pos).normalized()
 				enemy.take_damage(damage, dir)
@@ -59,11 +59,11 @@ func _chain_electric(source: BaseEnemy, chain_dmg: float) -> void:
 	for enemy in enemies:
 		if enemy == source or not (enemy is BaseEnemy) or enemy.is_dead:
 			continue
-		var dist := source.global_position.distance_to(enemy.global_position)
+		var dist: float = source.global_position.distance_to(enemy.global_position)
 		if dist < closest_dist:
 			closest_dist = dist
 			closest_enemy = enemy
 
 	if closest_enemy:
-		var dir := (closest_enemy.global_position - source.global_position).normalized()
+		var dir: Vector2 = (closest_enemy.global_position - source.global_position).normalized()
 		closest_enemy.take_damage(chain_dmg, dir)

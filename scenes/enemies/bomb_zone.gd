@@ -42,7 +42,7 @@ func _draw() -> void:
 
 func _explode() -> void:
 	if GameManager.player:
-		var dist := global_position.distance_to(GameManager.player.global_position)
+		var dist: float = global_position.distance_to(GameManager.player.global_position)
 		if dist <= bomb_radius:
 			GameManager.player.take_damage(bomb_damage)
 

@@ -52,7 +52,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed("ui_down"):
 		kb_dir.y += 1
 
-	var dir := input_dir if touch_active else kb_dir.normalized()
+	var dir: Vector2 = input_dir if touch_active else kb_dir.normalized()
 
 	if dir.length() > 0.1:
 		velocity = velocity.move_toward(dir * SPEED, ACCEL * delta)

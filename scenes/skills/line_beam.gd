@@ -30,13 +30,13 @@ func activate() -> void:
 
 	# Find nearest enemy to aim at
 	var player_pos := GameManager.player.global_position
-	var target_dir := GameManager.player.facing_dir
+	var target_dir: Vector2 = GameManager.player.facing_dir
 	var enemies := get_tree().get_nodes_in_group("enemies")
 	var closest_dist := beam_length + 100.0
 
 	for enemy in enemies:
 		if enemy is BaseEnemy and not enemy.is_dead:
-			var dist := player_pos.distance_to(enemy.global_position)
+			var dist: float = player_pos.distance_to(enemy.global_position)
 			if dist < closest_dist:
 				closest_dist = dist
 				target_dir = (enemy.global_position - player_pos).normalized()

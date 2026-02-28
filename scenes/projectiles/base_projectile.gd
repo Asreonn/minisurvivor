@@ -89,7 +89,7 @@ func _draw() -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if body is BaseEnemy and body not in hit_enemies:
 		hit_enemies.append(body)
-		var dir := (body.global_position - global_position).normalized()
+		var dir: Vector2 = (body.global_position - global_position).normalized()
 		body.take_damage(damage, dir)
 
 		# Hit particles
@@ -99,7 +99,7 @@ func _on_body_entered(body: Node2D) -> void:
 
 		# Chain modifier: jump to nearby enemy
 		if chain_count > 0:
-			var nearest := _find_nearest_enemy(body)
+			var nearest: BaseEnemy = _find_nearest_enemy(body)
 			if nearest:
 				chain_count -= 1
 				direction = (nearest.global_position - global_position).normalized()

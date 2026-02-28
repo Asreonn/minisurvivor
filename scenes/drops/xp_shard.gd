@@ -35,7 +35,7 @@ func _process(delta: float) -> void:
 		return
 
 	if magnetized and GameManager.player:
-		var dir := (GameManager.player.global_position - global_position).normalized()
+		var dir: Vector2 = (GameManager.player.global_position - global_position).normalized()
 		velocity = velocity.move_toward(dir * MAGNET_SPEED, MAGNET_ACCEL * delta)
 		global_position += velocity * delta
 

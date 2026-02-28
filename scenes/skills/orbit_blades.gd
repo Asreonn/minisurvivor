@@ -53,5 +53,5 @@ func activate() -> void:
 		for enemy in enemies:
 			if enemy is BaseEnemy and not enemy.is_dead:
 				if blade_pos.distance_to(enemy.global_position) < blade_size + enemy.data.radius:
-					var dir := (enemy.global_position - player_pos).normalized()
+					var dir: Vector2 = (enemy.global_position - player_pos).normalized()
 					enemy.take_damage(damage, dir)
